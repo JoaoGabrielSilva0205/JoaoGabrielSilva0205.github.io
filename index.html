@@ -3,40 +3,226 @@
 <head>
   <meta charset="utf-8">
   <title>Primeira Página</title>
-</head>
-<body style="background-color: rgb(5, 249, 192);">
 
+  <!-- responsivo -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* reset e base */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: rgb(244, 224, 2);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: #111;
+    }
+
+    /* header sticky e transparente */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(122, 26, 26, 0.08);
+    }
+
+    /* menu em caixas */
+    .menu { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .menu-item {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: .55rem 1rem; background: #fff;
+      border: 2px solid rgba(0,0,0,.12); border-radius: 10px;
+      text-decoration: none; color: #111; font-weight: 600; line-height: 1;
+      box-shadow: 0 2px 6px rgba(0,0,0,.12);
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+      white-space: nowrap;
+    }
+    .menu-item:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.16); }
+    .menu-item:active { transform: translateY(0); box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+
+    /* espaçamentos do conteúdo */
+    main { display: grid; gap: 56px; padding: 24px; padding-top: 32px; }
+
+    /* caixas das secções */
+    section {
+      width: 100%;              /* 👈 ocupa toda a largura disponível */
+      max-width: 1000px;        /* 👈 mas nunca ultrapassa 1000px */
+      margin: 0 auto;
+      background: rgba(250, 250, 250, 0.4); 
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    }
+
+    /* imagem padrão responsiva */
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* rodapé */
+    footer { text-align: center; padding: 24px; color: #111; opacity: .9; }
+
+    /* ---------- SOBRE (duas colunas) ---------- */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr; /* texto maior que a imagem */
+      align-items: center;
+      gap: 24px;
+    }
+    .about-text h1 { font-size: clamp(28px, 5vw, 42px); margin-bottom: 8px; }
+    .about-text p { font-size: clamp(16px, 2.2vw, 20px); opacity: .9; }
+
+    .about-photo {
+      width: 300px;          /* largura fixa */
+      max-width: 100%;       /* não estoura em telas menores */
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.12);
+    }
+
+    /* responsivo: em telas pequenas, empilha */
+    @media (max-width: 800px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .about-photo { margin: 0 auto; }
+    }
+
+    /* ---------- LABS estilizados ---------- */
+    #labs {
+      background: rgba(250, 250, 250, 0.4); /* igual às outras caixas */
+    }
+
+    .labs-container {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .lab-card {
+      background: rgba(250, 250, 250, 0.4); /* igual às outras caixas */
+      border-radius: 12px;
+      padding: 16px 20px;
+      width: 220px; /* largura fixa para os cards */
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform .15s ease, box-shadow .15s ease;
+      text-decoration: none;
+      color: #111;
+      display: block;
+    }
+
+    .lab-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+
+    .lab-card h3 {
+      margin-bottom: 6px;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .lab-card p {
+      font-size: .9rem;
+      opacity: .85;
+    }
+
+    /* tipografia leve para listas e links no restante */
+    ul { margin-left: 1.25rem; margin-top: .5rem; display: grid; gap: .25rem; }
+    a { color: #0b5cab; }
+    a:hover { text-decoration: underline; }
+    /* ---------- DIW centralizado ---------- */
+#diw {
+  display: flex;
+  justify-content: center;  /* centraliza na horizontal */
+  align-items: center;      /* centraliza na vertical */
+}
+
+#diw img {
+  max-width: 400px; /* opcional: limita a largura */
+  height: auto;
+}
+  </style>
+</head>
+
+<body>
   <header>
-    <h1>Primeira Página Web!</h1>
+    <nav class="menu">
+      <a class="menu-item" href="#inicio">Sobre</a>
+      <a class="menu-item" href="#conteudos">Conteúdos</a>
+      <a class="menu-item" href="#labs">Labs</a>
+      <a class="menu-item" href="#diw">DIW 🎉</a>
+    </nav>
   </header>
 
   <main>
-    <p>Eis a minha primeira página Web!</p>
-    <p>
-      Na Unidade Curricular de 
-      <a href="https://moodle.ensinolusofona.pt/course/view.php?id=11232">
-        Desenvolvimento de Interfaces Web
-      </a>
-      abordaremos as seguintes tecnologias Web &#127760;:
-    </p>
-    <ul>
-      <li>HTML</li>
-      <li>CSS</li>
-      <li>JavaScript</li>
-      <li>React e Next.js</li>
-    </ul>
-    <p>Iremos criar soluções criativas!</p>
-    <nav>
+    <!-- SOBRE -->
+    <section id="inicio" class="about">
+      <div class="about-grid">
+        <div class="about-text">
+          <h1>João Gabriel Silva</h1>
+          <p>Bem-vindo ao meu espaço! Sou um programador em constante evolução, sempre em busca de novos desafios e aprendizados. 
+            Carrego comigo uma frase que guia o meu percurso: “Hoje sei mais do que ontem, e menos do que amanhã.”
+            Aqui partilho ideias, projetos e descobertas — um convite para acompanhar esta jornada de crescimento.
+          </p>
+        </div>
+        <div>
+          <img class="about-photo" src="images/Foto Cartoon.png" alt="Foto de João Gabriel Silva">
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTEÚDOS -->
+    <section id="conteudos">
+      <p>
+        Na Unidade Curricular de
+        <a href="https://moodle.ensinolusofona.pt/course/view.php?id=11232">
+          Desenvolvimento de Interfaces Web
+        </a>
+        abordaremos as seguintes tecnologias Web &#127760;:
+      </p>
       <ul>
-        <li> <a href="lab1/index.html">lab1</a> </li>
-        <li> <a href="lab2/index.html">lab2</a> </li>  
+        <li>HTML</li>
+        <li>CSS</li>
+        <li>JavaScript</li>
+        <li>React e Next.js</li>
       </ul>
-    </nav>
-    <img src="images/diw.svg" alt="Desenvolvimento de Interfaces Web">
+      <p style="margin-top: 8px;">Iremos criar soluções criativas!</p>
+    </section>
+
+    <!-- LABS -->
+    <section id="labs">
+      <h2>Projetos / Labs</h2>
+      <p>Alguns exercícios desenvolvidos ao longo da UC.</p>
+      <div class="labs-container">
+        <a href="lab1/index.html" class="lab-card">
+          <h3>Lab 1</h3>
+          <p>Estrutura base e semântica</p>
+        </a>
+        <a href="lab2/index.html" class="lab-card">
+          <h3>Lab 2</h3>
+          <p>Estilos e layout responsivo</p>
+        </a>
+        <a href="lab3/index.html" class="lab-card">
+          <h3>Lab 3</h3>
+          <p>Interatividade com JS</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- DIW -->
+    <section id="diw">
+      <img src="images/diw.svg" alt="Desenvolvimento de Interfaces Web">
+    </section>
   </main>
+
   <footer>
     <p>Universidade Lusófona © 2025</p>
   </footer>
-
 </body>
 </html>
