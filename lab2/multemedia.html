@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rio de Janeiro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { --maxw: 1100px; }
+    body {
+      background: #fffaf0; /* antiquewhite suave */
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin: 0;
+      color: #111;
+      line-height: 1.5;
+    }
+    header, main, footer { max-width: var(--maxw); margin: 0 auto; padding: 16px; }
+    h1 { font-size: 44px; margin: 24px 0 8px; font-weight: 700; }
+    nav a {
+      margin-right: 16px;
+      color: #0563c1;
+      text-decoration: underline;
+      font-size: 18px;
+    }
+    h2 { font-size: 34px; margin: 24px 0 8px; }
+    p.lead { font-size: 18px; margin: 0 0 24px; }
+    h3 { font-size: 26px; margin: 16px 0; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+    .card {
+      border-radius: 20px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+      aspect-ratio: 16/10; /* formato parecido com o da imagem exemplo */
+    }
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    footer { font-size: 18px; margin: 32px auto 24px; }
+    @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Rio de Janeiro</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="local.html">Localização</a>
+      <a href="multimedia.html">Multimédia</a>
+      <a href="info.html">Informação</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Multimédia</h2>
+    <p class="lead">Nesta página encontra conteúdos multimédia.</p>
+
+    <h3>Fotografias</h3>
+    <section class="grid" aria-label="Grelha de fotografias do Rio de Janeiro">
+      <!-- As 8 imagens pedidas -->
+      <figure class="card">
+        <img src="https://tse3.mm.bing.net/th/id/OIP.dIMdRNnfXrTEGcZmfwzMzwHaEK?pid=Api"
+             alt="Pôr do sol no Rio de Janeiro visto do alto" />
+      </figure>
+      <figure class="card">
+        <img src="https://tse2.mm.bing.net/th/id/OIP.e4YoUsq_BxhTcZK1Jk0oAwHaEK?pid=Api"
+             alt="Copacabana e linha do horizonte do Rio de Janeiro" />
+      </figure>
+      <figure class="card">
+        <img src="https://tse1.mm.bing.net/th/id/OIP.MAEkOMtHn5pAllGoOsuAZQHaEK?pid=Api"
+             alt="Arpoador e skyline do Rio ao entardecer" />
+      </figure>
+      <figure class="card">
+        <img src="https://tse2.mm.bing.net/th/id/OIP.WLu41aDiL_KJtnRu2Af9_QHaEK?pid=Api"
+             alt="Vista panorâmica do Rio de Janeiro em alta resolução" />
+      </figure>
+      <figure class="card">
+        <img src="https://tse1.mm.bing.net/th/id/OIP.1ZcyCSrhFROvFZxcHpjwtQHaEK?pid=Api"
+             alt="Paisagem urbana do Rio de Janeiro em alta resolução" />
+      </figure>
+      <figure class="card">
+        <img src="https://tse3.mm.bing.net/th/id/OIP.ohSx6JDFjLedu7lvaZi4agHaEo?pid=Api"
+             alt="Rio de Janeiro à noite" />
+      </figure>
+      <figure class="card">
+        <img src="https://tse2.mm.bing.net/th/id/OIP.9rCLPYM6JXhTp9oDI64QaAHaE7?pid=Api"
+             alt="Paisagem costeira e montanhas no Rio de Janeiro" />
+      </figure>
+      <figure class="card">
+        <img src="https://tse2.mm.bing.net/th/id/OIP.e4YoUsq_BxhTcZK1Jk0oAwHaEK?pid=Api"
+             alt="Praia de Copacabana, Rio de Janeiro" />
+      </figure>
+    </section>
+  </main>
+
+  <footer>
+    <p>Portugal, 2025</p>
+  </footer>
+</body>
+</html>
