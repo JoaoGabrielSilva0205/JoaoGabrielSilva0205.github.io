@@ -1,27 +1,124 @@
 <!DOCTYPE html>
 <html lang="pt">
-    <head>
-        <meta charset="UTF-8">
-        <title>Rio de Janeiro</title>
-    </head>
-    <body>
-        <header>
-            <h1>A minha Cidade é o Rio de Janeiro</h1>
-            <nav>
-              <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="info.html">Informações</a></li>
-                <li><a href="local.html">Localização</a></li>
-                <li><a href="multimedia.html">Multimídia</a></li>
-              </ul>
-          </nav>
-        </header>
-        <main>
-            <h2>Home</h2>
-            <p>A minha cidade é muito linda!!!</p>
-        </main>
-        <footer>
-            <p>DIW 2025</p>
-        </footer>
-    </body>
+<head>
+  <meta charset="UTF-8" />
+  <title>Lab 3 — Rio de Janeiro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* reset + base */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: rgb(244, 224, 2);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: #111;
+    }
+
+    /* header simples */
+    header {
+      text-align: center;
+      padding: 24px;
+    }
+    header h1 {
+      font-size: clamp(28px, 5vw, 42px);
+    }
+
+    /* layout principal */
+    main { display: grid; gap: 32px; padding: 24px; padding-top: 16px; }
+
+    /* ---------- CAIXA AMARELA FOSCA ---------- */
+    .caixa-amarela {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      background: rgba(255, 224, 0, 0.35);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+
+    .caixa-amarela h2 { font-size: 1.6rem; margin-bottom: 8px; }
+    .caixa-amarela p  { font-size: 1.05rem; opacity: .95; }
+
+    /* cartões */
+    .cartoes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .cartao {
+      background: rgba(250, 250, 250, 0.6);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform .15s ease, box-shadow .15s ease;
+      text-decoration: none;
+      color: #111;
+      display: block;
+    }
+    .cartao:hover { transform: translateY(-3px); box-shadow: 0 6px 14px rgba(0,0,0,0.15); }
+    .cartao h3 { margin-bottom: 6px; font-size: 1.05rem; font-weight: 700; }
+    .cartao p  { font-size: .95rem; opacity: .9; }
+
+    /* imagem responsiva */
+    .caixa-amarela img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.12);
+      margin-top: 12px;
+    }
+
+    /* rodapé */
+    footer { text-align: center; padding: 24px; color: #111; opacity: .9; }
+
+    /* links gerais */
+    a { color: #0b5cab; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>A minha Cidade é o Rio de Janeiro</h1>
+  </header>
+
+  <main>
+    <!-- CAIXA AMARELA FOSCA -->
+    <section class="caixa-amarela">
+      <h2>Bem-vindo</h2>
+      <p>A minha cidade é muito linda! Aqui encontras atalhos para outras páginas do Lab 3.</p>
+
+      <div class="cartoes">
+        <a class="cartao" href="info.html">
+          <h3>Informações</h3>
+          <p>História, curiosidades e dados úteis.</p>
+        </a>
+        <a class="cartao" href="local.html">
+          <h3>Localização</h3>
+          <p>Mapa e pontos de interesse.</p>
+        </a>
+        <a class="cartao" href="multimedia.html">
+          <h3>Multimédia</h3>
+          <p>Imagens, vídeo e sons da cidade.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- NOVA CAIXA COM IMAGEM -->
+    <section class="caixa-amarela">
+      <h2>Vista do Rio</h2>
+      <p>Uma das paisagens mais icónicas da cidade:</p>
+      <img src="../images/fotorio.jpg" alt="Vista do Rio de Janeiro">
+    </section>
+  </main>
+
+  <footer>
+    <p>DIW 2025</p>
+  </footer>
+</body>
 </html>

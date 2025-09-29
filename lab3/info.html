@@ -2,191 +2,153 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-    <link rel="stylesheet" href="estilos.css">
-  <title>Rio de Janeiro — Informações</title>
+  <title>Lab 3 — Rio de Janeiro · Informações</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root{
-      --bg:#fffaf0;           /* antiquewhite suave */
-      --ink:#1f2937;          /* cinza-escuro */
-      --primary:#0ea5e9;      /* azul */
-      --primary-ink:#0b769f;  /* azul mais escuro */
-      --muted:#64748b;        /* cinza */
-      --stripe:#f8fafc;       /* listras da tabela */
-      --ring:rgba(14,165,233,.35);
-      --radius:16px;
-      --maxw:1100px;
+    /* Base */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: rgb(244, 224, 2);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: #111; line-height: 1.5;
     }
-    html,body{margin:0}
-    body{
-      background:var(--bg);
-      color:var(--ink);
-      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-      line-height:1.5;
-    }
-    header,main,footer{max-width:var(--maxw);margin:0 auto;padding:16px}
-    h1{font-size:40px;margin:24px 0 8px}
-    nav a{margin-right:16px;color:#0563c1;text-decoration:underline;font-size:18px}
-    h2{font-size:32px;margin:24px 0 8px}
-    p.lead{color:var(--muted);margin:0 0 24px}
+    header { text-align: center; padding: 24px; }
+    header h1 { font-size: clamp(28px, 5vw, 42px); }
+    main { display: grid; gap: 32px; padding: 24px; padding-top: 16px; }
+    footer { text-align:center; padding:24px; opacity:.9; }
 
-    /* Cartão da Tabela */
-    .card{
-      background:#fff;border-radius:var(--radius);
-      box-shadow:0 10px 20px -8px rgba(0,0,0,.12),0 2px 6px rgba(0,0,0,.06);
-      overflow:hidden;
-      border:1px solid #e5e7eb;
+    /* ====== CAIXA GRANDE (como na foto) ====== */
+    .caixa-amarela {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 24px;
+      border-radius: 20px;
+      border: 1px solid rgba(0,0,0,.06);
+      background: linear-gradient(180deg, rgba(255,246,143,.9), rgba(255,232,71,.85));
+      box-shadow: 0 8px 18px rgba(0,0,0,.08), 0 0 36px rgba(255,217,0,.45);
     }
-    .card header{
-      padding:18px 20px;
-      background:linear-gradient(180deg, rgba(14,165,233,.10), transparent);
-      border-bottom:1px solid #e5e7eb;
-    }
-    .card h3{margin:0;font-size:22px}
-    .caption{margin:8px 0 0;color:var(--muted);font-size:14px}
+    .caixa-amarela h2 { font-size: 1.6rem; margin-bottom: 8px; }
+    .lead { font-size: 1.05rem; opacity: .95; }
 
-    /* Tabela */
-    .nice-table{
-      width:100%;
-      border-collapse:separate;
-      border-spacing:0;
-      font-size:16px;
+    /* ====== CARTÃO AMARELINHO (como os “Lab 1/2/3”) ====== */
+    .cartao-limao {
+      background: #fff5a8;                 /* amarelo bem claro */
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: 0 6px 14px rgba(0,0,0,.12);
     }
+    .cartao-limao h3 { margin: 0 0 6px; font-size: 1.15rem; }
+    .caption { margin-top:6px; opacity:.75; font-size:.9rem; }
+
+    /* Tabela dentro do cartão */
+    .nice-table{ width:100%; border-collapse:separate; border-spacing:0; font-size:16px; }
     .nice-table thead th{
-      text-align:left;
-      background:#fff;
-      position:sticky; top:0;
-      z-index:1;
-      color:var(--primary-ink);
-      border-bottom:2px solid var(--primary);
-      padding:14px 16px;
+      text-align:left; background:transparent;
+      color:#111; padding:14px 16px;
+      border-bottom:2px solid rgba(0,0,0,.2);
     }
-    .nice-table tbody tr:nth-child(odd){ background:var(--stripe); }
+    .nice-table tbody tr:nth-child(odd){ background: rgba(255,255,255,.35); }
     .nice-table th.section{
-      background:rgba(14,165,233,.08);
-      color:var(--primary-ink);
-      font-weight:700;
-      border-right:1px solid #e5e7eb;
-      width:180px;
+      background: rgba(0,0,0,.04);
+      color:#111; font-weight:700; width:180px;
+      border-right:1px solid rgba(0,0,0,.08);
     }
-    .nice-table th, .nice-table td{
-      padding:12px 16px;
-      border-bottom:1px solid #e5e7eb;
-    }
-    .nice-table td.label{color:#0f172a;font-weight:600}
-    .nice-table td.value{color:#111827}
-    .nice-table a{
-      color:var(--primary-ink);
-      text-decoration:underline;
-    }
-    .hint{
-      margin-top:8px;
-      font-size:13px;
-      color:var(--muted);
-    }
+    .nice-table th, .nice-table td{ padding:12px 16px; border-bottom:1px solid rgba(0,0,0,.08); }
+    .nice-table td.label{ font-weight:600; }
+    .hint{ margin-top:8px; font-size:.9rem; opacity:.7; }
 
-    /* Lista de curiosidades */
-    .curiosidades{
-      margin-top:24px;
-      padding:16px 18px;
-      background:#fff;
-      border:1px solid #e5e7eb;
-      border-radius:var(--radius);
-      box-shadow:0 6px 14px -8px rgba(0,0,0,.12);
-    }
-    .curiosidades h3{margin:0 0 8px}
-    .curiosidades li{margin:6px 0}
-    footer{font-size:18px;margin:32px auto 24px}
+    /* Links */
+    a { color: #0b5cab; }
+    a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
   <header>
     <h1>Rio de Janeiro</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="local.html">Localização</a>
-      <a href="multimedia.html">Multimédia</a>
-      <a href="info.html">Informação</a>
-    </nav>
   </header>
 
   <main>
-    <h2>Informações</h2>
-    <p class="lead">Resumo com dados demográficos e geográficos do Rio de Janeiro, além de ligações úteis.</p>
+    <!-- Caixa 1: Informações -->
+    <section class="caixa-amarela">
+      <h2>Informações</h2>
+      <p class="lead">Resumo com dados demográficos e geográficos do Rio de Janeiro, além de ligações úteis.</p>
 
-    <!-- Cartão com a Tabela -->
-    <section class="card" aria-label="Tabela de informações sobre o Rio de Janeiro">
-      <header>
+      <section class="cartao-limao" aria-label="Tabela de informações" style="margin-top:16px;">
         <h3>Ficha da Cidade</h3>
-        <p class="caption">Exemplo de tabela com <code>rowspan</code> e <code>colspan</code>, estilizada.</p>
-      </header>
+        <p class="caption">Exemplo de tabela com <code>rowspan</code> e <code>colspan</code>.</p>
 
-      <div style="padding: 12px 16px 2px;">
-        <table class="nice-table">
-          <thead>
-            <tr>
-              <th scope="col">Categoria</th>
-              <th scope="col">Indicador</th>
-              <th scope="col">Valor</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- DEMOGRAFIA (rowspan=2) -->
-            <tr>
-              <th class="section" scope="rowgroup" rowspan="2">Demografia</th>
-              <td class="label">População (município)</td>
-              <td class="value">~ 6,7 milhões de hab.</td>
-            </tr>
-            <tr>
-              <td class="label">Densidade populacional</td>
-              <td class="value">~ 5.000 hab/km²</td>
-            </tr>
+        <div style="padding-top: 8px;">
+          <table class="nice-table">
+            <thead>
+              <tr>
+                <th scope="col">Categoria</th>
+                <th scope="col">Indicador</th>
+                <th scope="col">Valor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th class="section" scope="rowgroup" rowspan="2">Demografia</th>
+                <td class="label">População (município)</td>
+                <td class="value">~ 6,7 milhões de hab.</td>
+              </tr>
+              <tr>
+                <td class="label">Densidade populacional</td>
+                <td class="value">~ 5.000 hab/km²</td>
+              </tr>
 
-            <!-- GEOGRAFIA (rowspan=3) -->
-            <tr>
-              <th class="section" scope="rowgroup" rowspan="3">Geografia</th>
-              <td class="label">Área do município</td>
-              <td class="value">~ 1.200 km²</td>
-            </tr>
-            <tr>
-              <td class="label">Região</td>
-              <td class="value">Sudeste do Brasil</td>
-            </tr>
-            <tr>
-              <td class="label">Estado</td>
-              <td class="value">Rio de Janeiro (RJ)</td>
-            </tr>
+              <tr>
+                <th class="section" scope="rowgroup" rowspan="3">Geografia</th>
+                <td class="label">Área do município</td>
+                <td class="value">~ 1.200 km²</td>
+              </tr>
+              <tr>
+                <td class="label">Região</td>
+                <td class="value">Sudeste do Brasil</td>
+              </tr>
+              <tr>
+                <td class="label">Estado</td>
+                <td class="value">Rio de Janeiro (RJ)</td>
+              </tr>
 
-            <!-- WEBSITE (colspan=2 na última célula) -->
-            <tr>
-              <th class="section" scope="row">Website</th>
-              <td class="label" colspan="2">
-                <a href="https://www.rio.rj.gov.br/" target="_blank" rel="noopener noreferrer">
-                  www.rio.rj.gov.br
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <p class="hint">*Valores aproximados para fins didáticos.</p>
-      </div>
+              <tr>
+                <th class="section" scope="row">Website</th>
+                <td class="label" colspan="2">
+                  <a href="https://www.rio.rj.gov.br/" target="_blank" rel="noopener noreferrer">www.rio.rj.gov.br</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="hint">*Valores aproximados para fins didáticos.</p>
+        </div>
+      </section>
     </section>
 
-    <!-- Lista de 5 curiosidades -->
-    <section class="curiosidades" aria-label="Curiosidades sobre o Rio de Janeiro">
-      <h3>Curiosidades</h3>
-      <ul>
-        <li>O Cristo Redentor é uma das Novas 7 Maravilhas do Mundo (eleito em 2007).</li>
-        <li>O Carnaval do Rio tem desfiles no Sambódromo, com escolas de samba avaliadas por diversos quesitos.</li>
-        <li>O Bondinho do Pão de Açúcar foi inaugurado em 1912 e é um dos teleféricos mais icónicos do mundo.</li>
-        <li>A orla de Copacabana tem calçada portuguesa com desenho em ondas, popularizado por Burle Marx.</li>
-        <li>O Parque Nacional da Tijuca é uma das maiores florestas urbanas replantadas do planeta.</li>
-      </ul>
+    <!-- Caixa 2: Curiosidades (separada, mesmas cores) -->
+    <section class="caixa-amarela">
+      <h2>Curiosidades</h2>
+      <section class="cartao-limao" style="margin-top:16px;">
+        <ul>
+          <li>O Cristo Redentor é uma das Novas 7 Maravilhas do Mundo (2007).</li>
+          <li>O Carnaval do Rio tem desfiles no Sambódromo com avaliação por quesitos.</li>
+          <li>O Bondinho do Pão de Açúcar foi inaugurado em 1912.</li>
+          <li>A orla de Copacabana tem calçada portuguesa em ondas.</li>
+          <li>O Parque Nacional da Tijuca é uma das maiores florestas urbanas replantadas.</li>
+        </ul>
+      </section>
+    </section>
+
+    <!-- Navegação simples -->
+    <section class="caixa-amarela">
+      <p><a href="index.html">← Voltar ao Lab 3</a> · <a href="local.html">Localização</a> · <a href="multimedia.html">Multimédia</a></p>
     </section>
   </main>
 
   <footer>
-    <p>Portugal, 2025</p>
+    <p>DIW 2025</p>
   </footer>
 </body>
 </html>
