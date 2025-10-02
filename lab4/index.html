@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab4</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Testando novos mecanismos</h1>
+    </header>
+
+    <main>
+        <!-- 1 -->
+        <section>
+            <p id="area1">1. Passa por aqui!</p>
+        </section>
+
+        <!-- 2 -->
+        <section>
+            <p id="area2">2. <span>Pinta-me!</span>
+                <button onclick="pintar('red')">Red</button>
+                <button onclick="pintar('green')">Green</button>
+                <button onclick="pintar('blue')">Blue</button>
+            </p>
+        </section>
+
+        <!-- 3 -->
+        <section>
+            <p>3. Experimenta escrever... 
+                <input type="text" id="campoTexto" onkeyup="mostrarTexto()">
+            </p>
+            <p id="textoMostrado"></p>
+        </section>
+
+        <!-- 4 -->
+        <section>
+            <form onsubmit="mudarCor(event)">
+                <p>4. Escolha uma cor em inglês: 
+                    <input type="text" id="corEscolhida" value="white">
+                    <input type="submit" value="submeter">
+                </p>
+            </form>
+        </section>
+
+        <!-- 5 -->
+        <section>
+            <p>5. <button onclick="contar()">Conta!</button> 
+                <span id="contador">0</span>
+            </p>
+        </section>
+
+        <!-- 6 (posição do rato, novo) -->
+        <section>
+            <p id="posicaoRato">6. Posição do rato: (mova aqui em baixo)</p>
+        </section>
+
+        <section id="imagem-final">
+            <img src="../images/ImagemLab4.png" alt="Logo do site" width="120">
+        </section>
+    </main>
+
+    <footer>
+        <p>DIW 2025</p>
+    </footer>
+
+    <script src="scripts/main.js"></script>
+</body>
+</html>

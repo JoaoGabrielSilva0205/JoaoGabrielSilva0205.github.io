@@ -51,8 +51,8 @@
 
     /* caixas das secções */
     section {
-      width: 100%;              /* 👈 ocupa toda a largura disponível */
-      max-width: 1000px;        /* 👈 mas nunca ultrapassa 1000px */
+      width: 100%;
+      max-width: 1000px;
       margin: 0 auto;
       background: rgba(250, 250, 250, 0.4); 
       border: 1px solid rgba(0,0,0,.08);
@@ -70,7 +70,7 @@
     /* ---------- SOBRE (duas colunas) ---------- */
     .about-grid {
       display: grid;
-      grid-template-columns: 1.2fr 1fr; /* texto maior que a imagem */
+      grid-template-columns: 1.2fr 1fr;
       align-items: center;
       gap: 24px;
     }
@@ -78,14 +78,13 @@
     .about-text p { font-size: clamp(16px, 2.2vw, 20px); opacity: .9; }
 
     .about-photo {
-      width: 300px;          /* largura fixa */
-      max-width: 100%;       /* não estoura em telas menores */
+      width: 300px;
+      max-width: 100%;
       height: auto;
       border-radius: 12px;
       box-shadow: 0 6px 18px rgba(0,0,0,.12);
     }
 
-    /* responsivo: em telas pequenas, empilha */
     @media (max-width: 800px) {
       .about-grid { grid-template-columns: 1fr; }
       .about-photo { margin: 0 auto; }
@@ -93,7 +92,7 @@
 
     /* ---------- LABS estilizados ---------- */
     #labs {
-      background: rgba(250, 250, 250, 0.4); /* igual às outras caixas */
+      background: rgba(250, 250, 250, 0.4);
     }
 
     .labs-container {
@@ -105,10 +104,10 @@
     }
 
     .lab-card {
-      background: rgba(250, 250, 250, 0.4); /* igual às outras caixas */
+      background: rgba(250, 250, 250, 0.4);
       border-radius: 12px;
       padding: 16px 20px;
-      width: 220px; /* largura fixa para os cards */
+      width: 220px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       transition: transform .15s ease, box-shadow .15s ease;
       text-decoration: none;
@@ -132,25 +131,25 @@
       opacity: .85;
     }
 
-    /* tipografia leve para listas e links no restante */
     ul { 
       margin-left: 1.25rem; 
       margin-top: .5rem; 
       display: grid; 
-      gap: .25rem; }
+      gap: .25rem; 
+    }
     a { color: #0b5cab; }
     a:hover { text-decoration: underline; }
-    /* ---------- DIW centralizado ---------- */
-#diw {
-  display: flex;
-  justify-content: center;  /* centraliza na horizontal */
-  align-items: center;      /* centraliza na vertical */
-}
 
-#diw img {
-  max-width: 400px; /* opcional: limita a largura */
-  height: auto;
-}
+    /* ---------- DIW centralizado ---------- */
+    #diw {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #diw img {
+      max-width: 400px;
+      height: auto;
+    }
   </style>
 </head>
 
@@ -170,9 +169,8 @@
       <div class="about-grid">
         <div class="about-text">
           <h1>João Gabriel Silva</h1>
-          <p>Bem-vindo ao meu espaço! Sou um programador em constante evolução, sempre em busca de novos desafios e aprendizados. 
-            Carrego comigo uma frase que guia o meu percurso: “Hoje sei mais do que ontem, e menos do que amanhã.”
-            Aqui partilho ideias, projetos e descobertas — um convite para acompanhar esta jornada de crescimento.
+          <p>Bem-vindo ao meu espaço! Sou um programador em constante evolução, sempre em busca de novos desafios e aprendizagens.
+            “Hoje sei mais do que ontem, e menos do que amanhã.” Aqui partilho ideias, projetos e descobertas.
           </p>
         </div>
         <div>
@@ -188,7 +186,7 @@
         <a href="https://moodle.ensinolusofona.pt/course/view.php?id=11232">
           Desenvolvimento de Interfaces Web
         </a>
-        abordaremos as seguintes tecnologias Web &#127760;:
+        abordaremos as seguintes tecnologias Web :
       </p>
       <ul>
         <li>HTML</li>
@@ -215,6 +213,10 @@
         <a href="lab3/index.html" class="lab-card">
           <h3>Lab 3</h3>
           <p>Interatividade com JS</p>
+        </a>
+        <a href="lab4/index.html" class="lab-card">
+          <h3>Lab 4</h3>
+          <p>Eventos do rato + JS</p>
         </a>
       </div>
     </section>

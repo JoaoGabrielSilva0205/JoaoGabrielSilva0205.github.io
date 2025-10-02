@@ -1,0 +1,101 @@
+/* ===== Reset simples e base tipográfica ===== */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: #111;
+  background: #f7f7f7;
+  line-height: 1.45;
+}
+
+/* ===== Cabeçalho ===== */
+header {
+  background: #e6e6e6;
+  padding: 20px 12px;
+}
+header h1 {
+  margin: 0;
+  text-align: center;
+}
+
+/* ===== Layout responsivo: conteúdo centralizado ===== */
+main {
+  width: 100%;
+  max-width: 980px;         /* largura máxima do conteúdo */
+  margin: 0 auto;           /* centraliza na tela */
+  padding: 16px;            /* respiro nas bordas em telas pequenas */
+}
+
+/* Cada bloco (1 a 6 e a imagem) tem respiro entre si */
+section { 
+  margin: 16px 0; 
+}
+
+/* ===== Inputs e botões agradáveis ===== */
+input[type="text"] {
+  padding: 6px 8px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  background: #cfeaf5;      /* o teu “azul claro” */
+  outline: none;
+}
+input[type="text"]:focus {
+  border-color: #888;
+}
+button, input[type="submit"] {
+  padding: 6px 10px;
+  border: 1px solid #999;
+  border-radius: 6px;
+  background: #eee;
+  cursor: pointer;
+}
+button:hover, input[type="submit"]:hover {
+  filter: brightness(0.98);
+}
+
+/* ===== Pinta-me! (mantém o 'Pinta-me!' a vermelho como no print) ===== */
+#area2 span {
+  color: #c30000;
+  font-weight: 700;
+}
+
+/* ===== Área da posição do rato (6) ===== */
+#posicaoRato {
+  font-style: italic;
+  color: #333;
+}
+
+/* ===== Imagem final: centralizada e responsiva ===== */
+#imagem-final {
+  display: flex;                /* flex para centrar horizontalmente */
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0 8px;
+}
+
+#imagem-final img {
+  display: block;
+  height: auto;
+  /* A imagem fica MAIOR e RESPONSIVA.
+     - nunca passa de 520px
+     - em telas pequenas ocupa até 70% da largura da tela
+     - nunca fica menor que 180px */
+  width: clamp(180px, 70vw, 520px);
+  border-radius: 8px;           /* opcional, deixa mais “acabado” */
+  box-shadow: 0 6px 16px rgba(0,0,0,.12);
+}
+
+/* ===== Rodapé ===== */
+footer {
+  background: #e6e6e6;
+  padding: 18px 12px;
+  text-align: center;
+  color: #111;
+}
+
+/* ===== Pequenos ajustes para telas muito estreitas ===== */
+@media (max-width: 420px) {
+  header h1 { font-size: 1.3rem; }
+  button, input[type="submit"] { font-size: .95rem; }
+}
