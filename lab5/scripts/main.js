@@ -28,7 +28,6 @@ inputColorir.onkeyup = colorir;
 // 4 muda a cor de fundo de forma simples
 const campoCor = document.querySelector("#campo-cor");
 const btnCor = document.querySelector("#btn-cor");
-
 // 5 conta quando aperto o botao 
 btnCor.addEventListener("click", () => {
   document.body.style.background = campoCor.value;
@@ -40,6 +39,7 @@ function contar(){
 }
 document.querySelector("#contador button").onclick = contar
 
+// ---- 6. Usar onsubmit com preventDefault ----
 const formNome = document.querySelector('#nome-form');
 const nomeInput = document.querySelector('#nome-form #nome');
 const idadeInput = document.querySelector('#nome-form #idade');
@@ -47,19 +47,18 @@ const lblSaudacao = document.querySelector('#saudacao');
 
 formNome.onsubmit = (e) => {
   e.preventDefault(); // não recarrega a página
+
   const nome = nomeInput.value.trim();
   const idade = idadeInput.value.trim();
+
+  // validação simples
+  if (!nome || !idade) {
+    lblSaudacao.textContent = "Preencha o nome e a idade.";
+    return;
+  }
+
   lblSaudacao.textContent = `Olá, o ${nome} tem ${idade}!`;
 };
-
-// caso nao escrevam nada e tentem submeter
-    if (!nome || !idade) {
-        lblSaudacao.textContent = "Preencha o nome e a idade.";
-        return;
-    }
-    // mostra só depois de clicar em Submit
-    lblSaudacao.textContent = `Olá, o ${nome} tem ${idade}!`;
-
 
 let autoCount = 0;
 const autoSpan = document.querySelector("#autoCount");
