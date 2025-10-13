@@ -21,11 +21,25 @@
         <label for = "colorir"> 3. Experimenta escrever...</label>
         <input id="colorir" type="text">
     </section>
-    <section>
-        <p> 4. Escolha uma cor em ingles:</p>
+    <section id ="cor de fundo">
+        <label for="campo-cor">4. Escolha uma cor em inglês:</label>
+        <input id="campo-cor" type="text" placeholder="red, green, blue, purple...">
+        <button id="btn-cor" type="button">submeter</button>
+  <span id="msg-cor"></span>
     </section>
     <section id = "contador">
         <p> 5. <button>Conta!</button> <span></span></p>
+    </section>
+    <section id="nome-idade">
+        <p>6.
+            <input id="nome" type="text" placeholder="Nome">
+            <input id="idade" type="number" min="0" placeholder="Idade">
+            <button id="btnSubmit">Submit</button>
+        </p>
+        <p id="saudacao"></p>
+    </section>
+    <section id="auto">
+        <p>7. Automatic Counter: <span id="autoCount">0</span></p>
     </section>
     <script src = "scripts/main.js"></script>
 </body>
