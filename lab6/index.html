@@ -1,26 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-PT">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loja</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <header> 
-        <h1>Loja</h1>
-        <nav>
-            <ul>
-                <li><a href="#produtos">Produtos</a></li>
-                <li><a href="#cesto">Cesto</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section id="produtos"></section>
-        <section id="cesto"></section>
-    </main>
-    <footer></footer>
-    <script type = "module" src ="scripts/main.js"></script>
+  <header class="topbar">
+    <h1>Loja</h1>
+    <nav>
+      <ul>
+        <li><a href="#produtos">Produtos</a></li>
+        <li><a href="#cesto">Cesto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- Lista de produtos -->
+    <section id="produtos" aria-label="Lista de produtos">
+      <h2>Produtos</h2>
+      <ul id="lista-produtos" class="lista-produtos" role="list"></ul>
+    </section>
+
+    <!-- Cesto -->
+    <section id="cesto" aria-label="Cesto de compras">
+      <h2>Produtos selecionados</h2>
+      <ul id="cesto-itens" class="cart-list" role="list"></ul>
+
+      <aside class="cart-total">
+        <span>Custo total:</span>
+        <strong id="cesto-total">0,00 €</strong>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <p>&copy; 2025 Loja Exemplo — Projeto Laboratório</p>
+  </footer>
+
+  <script type="module" src="scripts/main.js"></script>
 </body>
 </html>

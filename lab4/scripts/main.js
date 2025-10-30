@@ -34,7 +34,7 @@ document.getElementById("area1").addEventListener("mouseover", function() {
 });
 
 // 2. mouseout → volta ao texto original
-document.getElementById("area1").addEventListener("mouseout", function() {
+document.querySelector('#area1').addEventListener("mouseout", function() {
     this.textContent = "1. Passa por aqui!";
 });
 

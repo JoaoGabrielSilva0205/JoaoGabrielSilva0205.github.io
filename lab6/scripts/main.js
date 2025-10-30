@@ -1,46 +1,42 @@
 import { produtos } from './produtos.js';
 
+/* --- Inicialização do localStorage --- */
+if (!localStorage.getItem('produtos-selecionados')) {
+  localStorage.setItem('produtos-selecionados', JSON.stringify([]));
+}
 
+/* --- Ao carregar a página --- */
 document.addEventListener('DOMContentLoaded', () => {
   carregarProdutos(produtos);
+  atualizaCesto();
 });
 
-/** Recebe a lista de produtos escreve cada produto na consola (objeto completo, depois id e title)
- * cria o <article> de cada produto e adiciona-o à secção #produtos */
-
+/* --- Função que renderiza os produtos da loja --- */
 function carregarProdutos(lista) {
-  const secProdutos = document.getElementById('produtos');
-  if (!secProdutos) {
-    console.error('Elemento #produtos não encontrado no DOM.');
-    return;
-  }
-
-  // Limpar antes de renderizar (útil em futuras atualizações)
-  secProdutos.textContent = '';
+  const ulProdutos = document.getElementById('lista-produtos');
+  ulProdutos.textContent = '';
 
   lista.forEach((produto) => {
-    // imprime o objeto completo
-    console.log(produto);
-    //imprime campos específicos
-    console.log('ID:', produto.id, 'Title:', produto.title);
-
-    //cria e insere o <article>
+    const li = document.createElement('li');
     const artigo = criarProduto(produto);
-    secProdutos.append(artigo);
+    li.append(artigo);
+    ulProdutos.append(li);
   });
 }
 
+/* --- Cria o artigo de um produto (na loja) --- */
 function criarProduto(produto) {
   const artigo = document.createElement('article');
+  artigo.className = 'card';
   artigo.setAttribute('data-id', produto.id);
 
-  // Header com título
+  // header
   const header = document.createElement('header');
   const titulo = document.createElement('h3');
   titulo.textContent = produto.title;
   header.append(titulo);
 
-  // Imagem com figure/figcaption
+  // imagem
   const figure = document.createElement('figure');
   const img = document.createElement('img');
   img.src = produto.image;
@@ -50,29 +46,119 @@ function criarProduto(produto) {
   figcaption.textContent = produto.category;
   figure.append(img, figcaption);
 
-  // Descrição
-  const paragrafoDesc = document.createElement('p');
-  paragrafoDesc.className = 'descricao';
-  paragrafoDesc.textContent = produto.description;
+  // descrição
+  const pDesc = document.createElement('p');
+  pDesc.className = 'descricao';
+  pDesc.textContent = produto.description;
 
-  // Preço
-  const paragrafoPreco = document.createElement('p');
-  paragrafoPreco.className = 'preco';
-  const preco = document.createElement('strong');
-  preco.textContent = `${produto.price.toFixed(2)} €`;
-  paragrafoPreco.append(preco);
+  // preço
+  const pPreco = document.createElement('p');
+  pPreco.className = 'preco';
+  pPreco.innerHTML = `<strong>${formatarEuro(produto.price)}</strong>`;
 
-  // Footer com botão
+  // botão
   const footer = document.createElement('footer');
   const botao = document.createElement('button');
-  botao.type = 'button';
-  botao.textContent = 'Adicionar ao cesto';
-  botao.setAttribute('aria-label', `Adicionar ${produto.title} ao cesto`);
-  botao.dataset.id = produto.id;
+  botao.textContent = '+ Adicionar ao cesto';
+  botao.className = 'btn';
+  botao.addEventListener('click', () => {
+    adicionarAoCesto(produto);
+    document.getElementById('cesto').scrollIntoView({ behavior: 'smooth' });
+  });
   footer.append(botao);
 
-  // Montagem final do <article>
-  artigo.append(header, figure, paragrafoDesc, paragrafoPreco, footer);
-
+  artigo.append(header, figure, pDesc, pPreco, footer);
   return artigo;
+}
+
+/* --- Adiciona ao cesto e guarda no localStorage --- */
+function adicionarAoCesto(produto) {
+  const lista = JSON.parse(localStorage.getItem('produtos-selecionados'));
+  const existente = lista.find((p) => p.id === produto.id);
+
+  if (existente) {
+    existente.qtd += 1;
+  } else {
+    lista.push({ ...produto, qtd: 1 });
+  }
+
+  localStorage.setItem('produtos-selecionados', JSON.stringify(lista));
+  atualizaCesto();
+}
+
+/* --- Atualiza o cesto no DOM --- */
+function atualizaCesto() {
+  const listaCesto = document.getElementById('cesto-itens');
+  const totalEl = document.getElementById('cesto-total');
+  listaCesto.textContent = '';
+
+  const lista = JSON.parse(localStorage.getItem('produtos-selecionados')) || [];
+  let total = 0;
+
+  if (lista.length === 0) {
+    const li = document.createElement('li');
+    li.innerHTML = '<p class="cesto-vazio">O cesto está vazio.</p>';
+    listaCesto.append(li);
+  } else {
+    lista.forEach((produto) => {
+      const artigo = criaProdutoCesto(produto);
+      const li = document.createElement('li');
+      li.append(artigo);
+      listaCesto.append(li);
+      total += produto.price * produto.qtd;
+    });
+  }
+
+  totalEl.textContent = formatarEuro(total);
+}
+
+/* --- Cria o artigo de um produto dentro do cesto --- */
+function criaProdutoCesto(produto) {
+  const artigo = document.createElement('article');
+  artigo.className = 'cart-item';
+
+  const img = document.createElement('img');
+  img.src = produto.image;
+  img.alt = produto.title;
+  img.width = 110;
+
+  const info = document.createElement('section');
+  info.className = 'cart-info';
+
+  const titulo = document.createElement('h4');
+  titulo.textContent = produto.title;
+
+  const precoLinha = document.createElement('p');
+  const subtotal = produto.price * produto.qtd;
+  precoLinha.innerHTML =
+    `Preço: <strong>${formatarEuro(produto.price)}</strong> · ` +
+    `Qtd: <strong>${produto.qtd}</strong> · ` +
+    `Total: <strong>${formatarEuro(subtotal)}</strong>`;
+
+  info.append(titulo, precoLinha);
+
+  const botoes = document.createElement('footer');
+  botoes.className = 'cart-actions';
+
+  const btnRemover = document.createElement('button');
+  btnRemover.textContent = 'Remover';
+  btnRemover.className = 'btn btn-outline';
+  btnRemover.addEventListener('click', () => removerDoCesto(produto.id));
+
+  botoes.append(btnRemover);
+  artigo.append(img, info, botoes);
+  return artigo;
+}
+
+/* --- Remove um produto do cesto e do localStorage --- */
+function removerDoCesto(id) {
+  let lista = JSON.parse(localStorage.getItem('produtos-selecionados')) || [];
+  lista = lista.filter((p) => p.id !== id);
+  localStorage.setItem('produtos-selecionados', JSON.stringify(lista));
+  atualizaCesto();
+}
+
+/* --- Utilitário --- */
+function formatarEuro(valor) {
+  return valor.toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' });
 }

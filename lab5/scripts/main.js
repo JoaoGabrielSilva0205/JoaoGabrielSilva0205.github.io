@@ -59,7 +59,6 @@ formNome.onsubmit = (e) => {
 
   lblSaudacao.textContent = `Olá, o ${nome} tem ${idade}!`;
 };
-
 let autoCount = 0;
 const autoSpan = document.querySelector("#autoCount");
 setInterval(() => {
