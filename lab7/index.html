@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loja</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <h1>Loja</h1>
+    <nav>
+      <ul>
+        <li><a href="#produtos">Produtos</a></li>
+        <li><a href="#cesto">Cesto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- Lista de produtos -->
+    <section id="produtos" aria-label="Lista de produtos">
+      <h2>Selecione os seus Produtos</h2>
+
+    <!-- Barra de filtrar os produtos -->
+      <div class="produtos-toolbar">
+        <label>
+          Filtrar
+          <select id="filtro-categoria">
+            <option value="todas">Todas as categorias</option>
+            <option value="T-shirts">T-shirts</option>
+            <option value="Canecas">Canecas</option>
+            <option value="Meias">Meias</option>
+          </select>
+        </label>
+
+        <label>
+          Ordenar
+          <select id="ordenar-produtos">
+            <option value="preco">Ordenar pelo preço</option>
+            <option value="preco-desc">Preço Decrescente</option>
+            <option value="preco-asc">Preço Crescente</option>
+          </select>
+        </label>
+
+        <label class="pesquisar-wrap">
+          Procurar
+          <input id="pesquisar" type="search" placeholder="pesquise por produto">
+        </label>
+      </div>
+
+      <ul id="lista-produtos" class="lista-produtos" role="list"></ul>
+    </section>
+
+    <!-- Cesto -->
+    <section id="cesto" aria-label="Cesto de compras">
+      <h2>Produtos selecionados</h2>
+      <ul id="cesto-itens" class="cart-list" role="list"></ul>
+
+      <aside class="cart-total">
+        <span>Custo total:</span>
+        <strong id="cesto-total">0,00 €</strong>
+      </aside>
+
+      <!-- Descontos da compra -->
+      <div class="checkout">
+        <label class="ck">
+          <input type="checkbox" id="chk-deisi">
+          És estudante do DEISI?
+        </label>
+
+        <label>
+          Cupão de desconto:
+          <input type="text" id="input-cupao" placeholder="">
+        </label>
+
+        <button id="btn-comprar" class="btn">Comprar</button>
+
+        <div class="resultado-final" id="resultado-final" hidden>
+          <p><strong>Valor final a pagar (com eventuais descontos):</strong>
+            <span id="total-final">0,00 €</span>
+          </p>
+          <p>Referência de pagamento: <span id="ref-pagamento"></span></p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="scripts/main.js"></script>
+</body>
+</html>
