@@ -144,3 +144,173 @@ export const produtos = [
     }
   }
 ]
+
+/* 
+===========================================================
+ GUIA EXPLICATIVO DO CÓDIGO - DEISI SHOP (main.js)
+===========================================================
+
+1) CONFIGURAÇÃO DE API
+-----------------------------------------------------------
+- API_BASE: define o endereço base da API.
+- apiGet() e apiPost(): funções utilitárias para comunicação com a API.
+  - apiGet: faz pedidos GET (ex.: categories, products)
+  - apiPost: faz pedidos POST (ex.: buy/), envia dados no formato JSON
+  - Inclui tratamento de erros e diagnóstico detalhado.
+
+--> Alterações possíveis:
+  * Se a API mudar de endereço, altera apenas o valor de API_BASE.
+  * Se for necessário login/token, adiciona nos headers de apiPost/apiGet.
+
+
+2) ESTADO DA APLICAÇÃO
+-----------------------------------------------------------
+- Objeto "estado" guarda:
+  filtro, ordenação, pesquisa, lista de produtos e categorias.
+
+--> Alterações possíveis:
+  * Adicionar novos critérios (ex.: ordenar por nome)
+  * Acrescentar paginação (ex.: estado.paginaAtual)
+
+
+3) LOCALSTORAGE
+-----------------------------------------------------------
+- Garante que o cesto começa vazio.
+- Guarda os produtos adicionados para persistir mesmo após refresh.
+
+--> Alterações possíveis:
+  * Limpar cesto após compra (ver finalizarCompra)
+
+
+4) EVENTOS DOMContentLoaded
+-----------------------------------------------------------
+- Liga todos os eventos de interface:
+  - Filtro de categoria
+  - Ordenação
+  - Pesquisa
+  - Checkbox de estudante
+  - Botão de compra
+  - Campo de nome (aceita apenas letras)
+- No fim, chama carregarDadosIniciais() para montar a página.
+
+--> Alterações possíveis:
+  * Adicionar debounce na pesquisa
+  * Fazer o foco automático em algum campo
+
+
+5) CARREGAMENTO INICIAL DA API
+-----------------------------------------------------------
+- Faz GET /categories/ e GET /products/ em paralelo.
+- Preenche estado.categorias e estado.produtos.
+- Chama renderLista() e atualiza o cesto.
+
+--> Alterações possíveis:
+  * Adicionar manualmente uma categoria extra (ex.: Casacos)
+    Exemplo:
+      if (!estado.categorias.includes('Casacos')) estado.categorias.push('Casacos');
+
+
+6) popularSelectCategorias()
+-----------------------------------------------------------
+- Preenche o <select> das categorias.
+- Primeira opção é sempre "Todas as categorias".
+
+--> Alterações possíveis:
+  * Forçar nova categoria diretamente:
+      if (!categorias.includes('Casacos')) {
+        const o = document.createElement('option');
+        o.value = 'Casacos';
+        o.textContent = 'Casacos';
+        sel.append(o);
+      }
+
+
+7) renderLista() e carregarProdutos()
+-----------------------------------------------------------
+- renderLista(): aplica filtros, pesquisa e ordenação.
+- carregarProdutos(): desenha os produtos visíveis na lista.
+
+--> Alterações possíveis:
+  * Ordenar por nome:
+      else if (estado.ordenar === 'titulo-asc') lista.sort((a,b)=>a.title.localeCompare(b.title));
+      else if (estado.ordenar === 'titulo-desc') lista.sort((a,b)=>b.title.localeCompare(a.title));
+
+  * Implementar paginação (usar slice para limitar resultados).
+
+
+8) criarProduto(produto)
+-----------------------------------------------------------
+- Cria cada card de produto com título, imagem, descrição, preço e botão.
+
+--> Alterações possíveis:
+  * Adicionar avaliação (rating):
+      const rating = document.createElement('p');
+      rating.textContent = `★ ${produto.rating.rate} (${produto.rating.count})`;
+      artigo.append(rating);
+  * Desabilitar botão se produto esgotado.
+
+
+9) FUNÇÕES DO CESTO
+-----------------------------------------------------------
+- adicionarAoCesto(produto): adiciona item ao localStorage.
+- removerDoCesto(id): remove item específico.
+- atualizaCesto(): recalcula total e mostra produtos.
+- criaProdutoCesto(): constrói o layout do item no cesto.
+
+--> Alterações possíveis:
+  * Adicionar botões + e − para alterar quantidades.
+  * Botão “Esvaziar cesto” para limpar tudo.
+
+
+10) CHECKOUT E DESCONTOS
+-----------------------------------------------------------
+- obterTotalCestoEmCents(): soma total do cesto.
+- bloquearCupaoSeEstudante(): define placeholder do campo cupão.
+- atualizarResumoFinal(): mostra o total.
+- finalizarCompra(): faz POST para API /buy/.
+
+--> Detalhes:
+  * A API calcula o desconto, o front apenas envia:
+      products, student, coupon, name.
+  * Após sucesso, mostra nome, total e referência.
+
+--> Alterações possíveis:
+  * Validar que o nome foi preenchido.
+  * Mostrar mensagem de sucesso personalizada.
+  * Limpar o cesto depois da compra:
+        localStorage.setItem('produtos-selecionados', JSON.stringify([]));
+        atualizaCesto();
+
+
+11) UTILITÁRIOS
+-----------------------------------------------------------
+- formatarEuro(): formata o valor em euros.
+- toCents() e fromCents(): convertem entre euros e cêntimos.
+
+===========================================================
+ DICAS PARA DEFESA
+===========================================================
+✔ API e front separados: o front não faz descontos.
+✔ Cupão só é usado se não for estudante.
+✔ Nome do cliente validado: só letras e espaços.
+✔ Filtros e ordenações feitos em memória (rápido e simples).
+✔ Fácil de expandir (basta alterar funções isoladas).
+✔ Erros tratados com alerts e console.warn().
+
+===========================================================
+ EXEMPLO DE PERGUNTA DO PROFESSOR
+-----------------------------------------------------------
+❓ “Como adicionar a categoria Casacos?”
+👉 No final da função carregarDadosIniciais():
+      if (!estado.categorias.includes('Casacos')) estado.categorias.push('Casacos');
+
+❓ “Como adicionar ordenação por nome?”
+👉 Em renderLista(), adicionar:
+      else if (estado.ordenar === 'titulo-asc') lista.sort((a,b)=>a.title.localeCompare(b.title));
+
+===========================================================
+FIM DO GUIA
+===========================================================
+*/
+
+

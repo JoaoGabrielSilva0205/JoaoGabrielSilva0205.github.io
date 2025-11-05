@@ -69,6 +69,10 @@
           <input type="checkbox" id="chk-deisi">
           És estudante do DEISI?
         </label>
+        <label>
+              Nome:
+          <input type="text" id="input-nome" placeholder="ex.: Maria Quero Quero">
+        </label>
 
         <label>
           Cupão de desconto:
@@ -81,7 +85,9 @@
           <p><strong>Valor final a pagar (com eventuais descontos):</strong>
             <span id="total-final">0,00 €</span>
           </p>
+          <p><strong>Nome do cliente:</strong> <span id="nome-cliente"></span></p>
           <p>Referência de pagamento: <span id="ref-pagamento"></span></p>
+          <p id="mensagem-api" class="mensagem-api" hidden></p>
         </div>
       </div>
     </section>

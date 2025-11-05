@@ -1,20 +1,50 @@
-import { produtos } from './produtos.js';
+/* --- Config API --- */
+const API_BASE = 'https://deisishop.pythonanywhere.com';
+
+async function apiGet(path) {
+  const url = `${API_BASE}/${path.replace(/^\/+/,'')}`;
+  const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+  if (!res.ok) throw new Error(`GET ${url} -> ${res.status}`);
+  return res.json();
+}
+
+async function apiPost(path, data) {
+  const url = `${API_BASE}/${path.replace(/^\/+/, '')}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(data)
+  });
+
+  // tenta ler JSON ou texto de erro para diagnosticar
+  let payloadTexto = '';
+  try { payloadTexto = await res.clone().text(); } catch {}
+
+  if (!res.ok) {
+    throw new Error(`POST ${url} -> ${res.status} ${res.statusText}\n${payloadTexto}`);
+  }
+
+  try { return await res.json(); }
+  catch { return {}; }
+}
+
+/* --- Estado --- */
+let estado = {
+  filtro: 'todas',
+  ordenar: 'preco', // preco | preco-asc | preco-desc
+  pesquisa: '',
+  produtos: [],
+  categorias: []
+};
 
 /* --- Inicialização do localStorage --- */
 if (!localStorage.getItem('produtos-selecionados')) {
   localStorage.setItem('produtos-selecionados', JSON.stringify([]));
 }
 
-/* --- Estado simples da listagem --- */
-let estado = {
-  filtro: 'todas',
-  ordenar: 'preco', // preco | preco crescente | preco decrescente
-  pesquisa: ''
-};
-
 /* --- Ao carregar a página --- */
 document.addEventListener('DOMContentLoaded', () => {
-  // liga eventos do filtrar
+  // filtros
   document.getElementById('filtro-categoria').addEventListener('change', e => {
     estado.filtro = e.target.value;
     renderLista();
@@ -30,22 +60,78 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // checkout
   document.getElementById('btn-comprar').addEventListener('click', finalizarCompra);
-  document.getElementById('chk-deisi').addEventListener('change', atualizarResumoFinal);
+  document.getElementById('chk-deisi').addEventListener('change', () => {
+    bloquearCupaoSeEstudante();
+    atualizarResumoFinal();
+  });
   document.getElementById('input-cupao').addEventListener('input', atualizarResumoFinal);
+  
+  // so permite letras e acentos na parte do nome   
+  const inputNome = document.getElementById('input-nome');
+  if (inputNome) {
+    inputNome.addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '');
+    });
+  }
 
-  renderLista();
-  atualizaCesto();
-  atualizarResumoFinal(); // inicial
+  // arranque
+  carregarDadosIniciais();
 });
 
-/* ---------------- LISTA DE PRODUTOS ---------------- */
+/* ---------------- CARREGAMENTO API ---------------- */
+async function carregarDadosIniciais() {
+  try {
+    // Carregar categorias e produtos em paralelo
+    const [categorias, produtos] = await Promise.all([
+      apiGet('categories/'),
+      apiGet('products/')
+    ]);
 
+    estado.categorias = Array.isArray(categorias) ? categorias : [];
+    estado.produtos = Array.isArray(produtos) ? produtos : [];
+
+    popularSelectCategorias(estado.categorias);
+    renderLista();
+    atualizaCesto();
+    bloquearCupaoSeEstudante();
+    atualizarResumoFinal();
+  } catch (err) {
+    console.error(err);
+    // fallback visual simples
+    const ulProdutos = document.getElementById('lista-produtos');
+    ulProdutos.textContent = '';
+    const li = document.createElement('li');
+    li.innerHTML = `<p style="color:#b91c1c"><strong>Não foi possível carregar os produtos.</strong> Verifica a ligação e tenta novamente.</p>`;
+    ulProdutos.append(li);
+  }
+}
+
+function popularSelectCategorias(categorias) {
+  const sel = document.getElementById('filtro-categoria');
+  // limpa opções atuais exceto a primeira (“todas”)
+  sel.innerHTML = '';
+  const optTodas = document.createElement('option');
+  optTodas.value = 'todas';
+  optTodas.textContent = 'Todas as categorias';
+  sel.append(optTodas);
+
+  (categorias || []).forEach(cat => {
+    const o = document.createElement('option');
+    o.value = cat;
+    o.textContent = cat;
+    sel.append(o);
+  });
+}
+
+/* ---------------- LISTA DE PRODUTOS ---------------- */
 function renderLista() {
   // filtrar
-  let lista = produtos.filter(p => {
+  let lista = (estado.produtos || []).filter(p => {
     const okCat = estado.filtro === 'todas' || p.category === estado.filtro;
     const q = estado.pesquisa.trim();
-    const okSearch = !q || p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q);
+    const okSearch = !q ||
+      (p.title && p.title.toLowerCase().includes(q)) ||
+      (p.description && p.description.toLowerCase().includes(q));
     return okCat && okSearch;
   });
 
@@ -54,19 +140,16 @@ function renderLista() {
     lista.sort((a,b) => a.price - b.price);
   } else if (estado.ordenar === 'preco-desc') {
     lista.sort((a,b) => b.price - a.price);
-  } else {
-    // "preco" (sem direção) -> mantém a ordem original do array
-  }
+  } // "preco": mantém ordem da API
 
   carregarProdutos(lista);
 }
 
-/* --- Renderizar produtos --- */
 function carregarProdutos(lista) {
   const ulProdutos = document.getElementById('lista-produtos');
   ulProdutos.textContent = '';
 
-  lista.forEach((produto) => {
+  (lista || []).forEach((produto) => {
     const li = document.createElement('li');
     const artigo = criarProduto(produto);
     li.append(artigo);
@@ -95,7 +178,7 @@ function criarProduto(produto) {
 
   const pDesc = document.createElement('p');
   pDesc.className = 'descricao';
-  pDesc.textContent = produto.description;
+  pDesc.textContent = produto.description || '';
 
   const pPreco = document.createElement('p');
   pPreco.className = 'preco';
@@ -118,7 +201,6 @@ function criarProduto(produto) {
 }
 
 /* ---------------- CESTO ---------------- */
-
 function adicionarAoCesto(produto) {
   const lista = JSON.parse(localStorage.getItem('produtos-selecionados')) || [];
   const existente = lista.find((p) => p.id === produto.id);
@@ -202,63 +284,98 @@ function removerDoCesto(id) {
 }
 
 /* ---------------- CHECKOUT / DESCONTOS ---------------- */
-
 function obterTotalCestoEmCents() {
   const lista = JSON.parse(localStorage.getItem('produtos-selecionados')) || [];
   return lista.reduce((acc, p) => acc + toCents(p.price) * p.qtd, 0);
 }
 
-// Regras simples de desconto:
-// - Estudante DEISI: 25%
-// - Cupão "DEISI10": -10% (acumula)
-// Calculado sempre em cêntimos (evita erros decimais)
-function calcularValorFinal(totalCents, estudante, cupao) {
-  let valor = totalCents;
-  if (estudante) valor = Math.round(valor * 0.75);
-  if (cupao && cupao.toUpperCase() === 'DEISI10') {
-    valor = Math.round(valor * 0.90);
-  }
-  return valor;
+function bloquearCupaoSeEstudante() {
+  const chk = document.getElementById('chk-deisi');
+  const input = document.getElementById('input-cupao');
+
+  // nunca desativar
+  input.disabled = false;
+
+  input.placeholder = 'Introduza o cupão ';
 }
 
 function atualizarResumoFinal() {
   const totalCesto = obterTotalCestoEmCents();
-  const estudante = document.getElementById('chk-deisi').checked;
-  const cupao = document.getElementById('input-cupao').value.trim();
-
-  const finalCents = calcularValorFinal(totalCesto, estudante, cupao);
-  document.getElementById('total-final').textContent = formatarEuro(fromCents(finalCents));
-
-  const box = document.getElementById('resultado-final');
-  box.hidden = (fromCents(totalCesto) === 0);
+  document.getElementById('total-final').textContent = formatarEuro(fromCents(totalCesto));
+  document.getElementById('resultado-final').hidden = (fromCents(totalCesto) === 0);
 }
 
-function finalizarCompra() {
+async function finalizarCompra() {
   const totalCesto = obterTotalCestoEmCents();
   if (totalCesto === 0) return;
 
   const estudante = document.getElementById('chk-deisi').checked;
   const cupao = document.getElementById('input-cupao').value.trim();
-  const finalCents = calcularValorFinal(totalCesto, estudante, cupao);
+  const nomeInput = document.getElementById('input-nome');
+  const nomeCliente = (nomeInput && nomeInput.value.trim()) ? nomeInput.value.trim() : '';
 
-  // mostra total final
-  document.getElementById('total-final').textContent = formatarEuro(fromCents(finalCents));
-  document.getElementById('resultado-final').hidden = false;
+  // 1) forçar número e remover duplicados
+  const lista = JSON.parse(localStorage.getItem('produtos-selecionados')) || [];
+  const idsNumericos = lista
+    .map(p => Number(p.id))
+    .filter(n => Number.isFinite(n));          // só números válidos
 
-  // gera referência simples: yymmdd-XXXX
-  const hoje = new Date();
-  const yymmdd =
-    String(hoje.getFullYear()).slice(-2) +
-    String(hoje.getMonth() + 1).padStart(2, '0') +
-    String(hoje.getDate()).padStart(2, '0');
-  const seq = Math.floor(Math.random() * 9000) + 1000;
-  document.getElementById('ref-pagamento').textContent = `${yymmdd}-${seq}`;
+  const products = Array.from(new Set(idsNumericos)); // sem repetição
 
-  // (opcional) poderias limpar o cesto aqui:
-  // localStorage.setItem('produtos-selecionados', JSON.stringify([]));
-  // atualizaCesto(); atualizarResumoFinal();
+  if (!products.length) {
+    alert('Cesto vazio ou IDs inválidos.');
+    return;
+  }
+
+  // 2) enviar sempre coupon e name como string (mesmo vazios)
+  const payload = {
+    products,
+    student: Boolean(estudante),
+    coupon: cupao || "",
+    name: nomeCliente || ""
+  };
+
+  try {
+    console.log('POST /buy/ payload:', payload);
+    const resp = await apiPost('buy/', payload);
+
+    if (resp && typeof resp.error === 'string' && resp.error.trim() !== '') {
+      alert(resp.error);
+      return;
+    }
+
+    document.getElementById('resultado-final').hidden = false;
+
+    const nomeSpan = document.getElementById('nome-cliente');
+    if (nomeSpan) nomeSpan.textContent = nomeCliente || '—';
+
+    const totalNumber = Number.parseFloat(resp?.totalCost);
+    const totalSpan = document.getElementById('total-final');
+    totalSpan.textContent = Number.isFinite(totalNumber)
+      ? formatarEuro(totalNumber)
+      : `${resp?.totalCost ?? fromCents(totalCesto)} €`;
+
+    document.getElementById('ref-pagamento').textContent = resp?.reference || '—';
+
+    const msg = document.getElementById('mensagem-api');
+    if (msg) {
+      if (resp?.example) { msg.textContent = resp.example; msg.hidden = false; }
+      else { msg.textContent = ''; msg.hidden = true; }
+    }
+
+  } catch (err) {
+    console.warn('Falha na compra na API:', err);
+    alert(`Compra falhou:\n${err.message}`);
+
+    document.getElementById('resultado-final').hidden = false;
+    const nomeSpan = document.getElementById('nome-cliente');
+    if (nomeSpan) nomeSpan.textContent = nomeCliente || '—';
+    document.getElementById('total-final').textContent = formatarEuro(fromCents(totalCesto));
+    document.getElementById('ref-pagamento').textContent = '—';
+    const msg = document.getElementById('mensagem-api');
+    if (msg) { msg.textContent = ''; msg.hidden = true; }
+  }
 }
-
 /* ---------------- Utilitários ---------------- */
 function formatarEuro(valor) {
   return valor.toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' });

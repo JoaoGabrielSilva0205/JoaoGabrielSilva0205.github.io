@@ -178,3 +178,183 @@ body{
   #produtos .descricao{ grid-column: 2 / 3; }
   #produtos .preco{ grid-column: 3 / 4; }
 }
+
+/* 
+===========================================================
+ GUIA EXPLICATIVO DO CSS - DEISI SHOP
+===========================================================
+
+1) VARIÁVEIS GLOBAIS (:root)
+-----------------------------------------------------------
+- Centralizam todas as cores, sombras e tamanhos.
+- Permitem alterar o visual do site inteiro de forma rápida.
+
+  --bg: cor de fundo principal do site.
+  --text: cor base do texto.
+  --muted: cor de texto secundário.
+  --loja-bg: fundo da secção de produtos.
+  --cesto-bg: fundo da secção do cesto.
+  --card-bg, --card-br, --card-shadow: aparência dos “cards”.
+  --btn-bg, --btn-bg-2, --btn-fg, --btn-outline: estilos de botões.
+
+--> Alterações possíveis:
+  * Mudar o tema geral do site alterando apenas as variáveis.
+  * Exemplo: trocar --btn-bg por outra cor (#1e3a8a para azul).
+  * Adicionar nova variável (--header-bg) se criar outro tipo de secção.
+
+
+2) RESET E CONFIGURAÇÃO GLOBAL
+-----------------------------------------------------------
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; }
+body { ... }
+
+- Define fonte, cor e espaçamento padrão.
+- Impede que margens/paddings de elementos quebrem o layout.
+
+--> Alterações possíveis:
+  * Alterar fonte principal globalmente.
+  * Ajustar line-height para textos mais compactos.
+
+
+3) TOPO (BARRA SUPERIOR)
+-----------------------------------------------------------
+.topbar, .topbar h1, .topbar nav, .topbar a
+
+- Cria cabeçalho fixo (position: sticky) com gradiente roxo.
+- Contém título da loja e navegação principal.
+
+--> Alterações possíveis:
+  * Alterar gradiente: background: linear-gradient(90deg, #0077b6, #00b4d8);
+  * Adicionar logótipo (img) antes do h1.
+  * Fixar no topo mesmo ao rolar (já está com sticky + z-index).
+
+
+4) LAYOUT PRINCIPAL
+-----------------------------------------------------------
+.container { display: grid; gap: 48px; padding: 24px; }
+
+- Define o espaçamento entre secções (produtos e cesto).
+- Usa grid simples com espaçamento fixo.
+
+--> Alterações possíveis:
+  * Mudar gap para reduzir espaço entre secções.
+  * Adicionar @media queries para layouts diferentes em ecrãs grandes.
+
+
+5) SECÇÃO DE PRODUTOS (#produtos)
+-----------------------------------------------------------
+#produtos, .card, .descricao, .preco ...
+
+- Fundo lilás-claro (var(--loja-bg)).
+- Cada produto é um “card” com sombra, bordas arredondadas e layout em grid.
+- Mostra imagem, categoria, descrição e preço.
+
+--> Alterações possíveis:
+  * Mudar número de colunas no card (ex.: adicionar rating).
+  * Ajustar sombra em var(--card-shadow).
+  * Aumentar tamanho da imagem alterando img.width no JS ou aqui via CSS.
+
+⚙ Adicionar nova categoria (ex.: “Casacos”):
+- Não é preciso alterar o CSS — os estilos são automáticos para qualquer categoria.
+
+
+6) SECÇÃO DO CESTO (#cesto)
+-----------------------------------------------------------
+#cesto, .cart-list, .cart-item, .cart-info, .cart-total
+
+- Fundo esverdeado-claro (var(--cesto-bg)).
+- Itens listados em colunas com imagem, título, preço e botão Remover.
+- Destaque visual com borda tracejada (border: 2px dashed #a855f7).
+
+--> Alterações possíveis:
+  * Alterar cor da borda do cesto.
+  * Adicionar hover nos itens do cesto (.cart-item:hover { transform: scale(1.01); }).
+  * Criar classe .cart-empty para um estilo diferente quando o cesto estiver vazio.
+
+
+7) BOTÕES (.btn)
+-----------------------------------------------------------
+.btn, .btn:hover, .btn:active
+
+- Botão arredondado com fundo roxo (var(--btn-bg)).
+- Ao passar o rato: leve aumento de brilho.
+- Ao clicar: pequeno deslocamento (efeito de pressão).
+
+--> Alterações possíveis:
+  * Criar variações (.btn-outline, .btn-secundario).
+  * Trocar o raio para quadrado (border-radius: 8px;).
+
+
+8) RESPONSIVIDADE (@media)
+-----------------------------------------------------------
+@media (min-width: 920px) { ... }
+
+- Reorganiza os produtos em grelha de 3 colunas:
+  Imagem (260px) | Descrição | Preço
+- Mantém layout limpo em ecrãs grandes.
+
+--> Alterações possíveis:
+  * Mudar ponto de corte (min-width: 768px, por exemplo).
+  * Aumentar número de colunas para telas ainda maiores.
+
+
+9) FILTROS DE PRODUTOS (.produtos-toolbar)
+-----------------------------------------------------------
+- Cria caixa branca com sombra e cantos arredondados.
+- Contém label, select e campo de pesquisa.
+
+--> Alterações possíveis:
+  * Adicionar botão “Limpar filtros”.
+  * Mudar sombra (var(--card-shadow)) para cor mais leve.
+  * Ajustar espaçamento interno (padding).
+
+
+10) CHECKOUT (.checkout)
+-----------------------------------------------------------
+.checkout, input[type=text], .ck, .resultado-final
+
+- Área onde o utilizador escreve o nome, cupão e marca se é estudante.
+- Estilo simples e coerente com o resto do site.
+- .resultado-final mostra o resumo (total e referência de pagamento).
+
+--> Alterações possíveis:
+  * Mudar a cor de fundo da caixa final (#fff para outro tom).
+  * Adicionar destaque quando a compra é concluída:
+      .resultado-final.sucesso { border: 2px solid #16a34a; background: #dcfce7; }
+
+===========================================================
+ DICAS PARA DEFESA
+===========================================================
+✔ Uso consistente de variáveis → facilita personalização e tema claro/escuro.  
+✔ Layout baseado em grid e flex → responsivo e moderno.  
+✔ Sombra e bordas arredondadas → reforçam o conceito de “cards” (UX clean).  
+✔ Estilos separados por secção → manutenção simples.  
+✔ Responsividade incluída via media query única.  
+✔ Pode adicionar temas alterando só o bloco :root.
+
+===========================================================
+ EXEMPLOS DE PERGUNTAS DO PROFESSOR
+-----------------------------------------------------------
+❓ “Como mudarias o tema para escuro?”
+👉 No :root:
+      --bg: #1d1d1f;
+      --text: #f9fafb;
+      --card-bg: #2d2d30;
+
+❓ “Como destacarias o botão Comprar?”
+👉 Criar nova classe:
+      .btn-comprar {
+        background: #16a34a;
+        color: #fff;
+        font-weight: 700;
+      }
+
+❓ “Como deixar os cards com borda mais visível?”
+👉 Alterar:
+      --card-shadow: 0 6px 18px rgba(0,0,0,.2);
+
+===========================================================
+FIM DO GUIA CSS
+===========================================================
+*/

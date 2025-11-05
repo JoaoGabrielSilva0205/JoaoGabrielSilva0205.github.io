@@ -43,3 +43,136 @@
   <script type="module" src="scripts/main.js"></script>
 </body>
 </html>
+
+<!-- ===========================================================
+ GUIA EXPLICATIVO DO HTML – DEISI SHOP
+===========================================================
+
+1) HEAD (metadados e assets)
+-----------------------------------------------------------
+<!DOCTYPE html> e <html lang="pt-PT"> → definem HTML5 e idioma.
+<meta charset="UTF-8"> → garante suporte a acentuação.
+<meta name="viewport"> → torna o site responsivo.
+<title>Loja</title> → título da aba do navegador.
+<link rel="stylesheet" href="css/style.css"> → ligação ao ficheiro CSS principal.
+
+→ Alterações possíveis:
+  - Mudar o título da página.
+  - Adicionar favicon: <link rel="icon" href="images/favicon.png">.
+
+
+2) HEADER .topbar (navegação principal)
+-----------------------------------------------------------
+<header class="topbar">
+  <h1>Loja</h1>
+  <nav>...</nav>
+</header>
+
+→ Mostra o nome da loja e navegação entre secções (“Produtos” e “Cesto”).
+→ Usa position: sticky no CSS para ficar sempre visível no topo.
+
+→ Alterações possíveis:
+  - Adicionar logótipo (<img> antes do <h1>).
+  - Acrescentar links como “Ajuda” ou “Contacto”.
+
+
+3) MAIN .container (estrutura principal)
+-----------------------------------------------------------
+<main class="container"> → contém todas as secções da página.
+→ O layout é definido com grid no CSS, criando espaço entre “Produtos” e “Cesto”.
+
+
+4) SECÇÃO #produtos (lista e filtros)
+-----------------------------------------------------------
+<section id="produtos"> ... </section>
+
+→ Mostra todos os produtos vindos da API.
+→ Inclui barra de ferramentas com:
+   - Filtro de categoria (id="filtro-categoria")
+   - Ordenação (id="ordenar-produtos")
+   - Pesquisa (id="pesquisar")
+→ A lista de produtos é gerada dinamicamente dentro de <ul id="lista-produtos">.
+
+→ Alterações possíveis:
+  - Adicionar nova categoria manualmente no HTML:
+        <option value="Casacos">Casacos</option>
+  - Adicionar nova opção de ordenação:
+        <option value="titulo-asc">Nome (A–Z)</option>
+  - Mudar texto do placeholder para tornar a pesquisa mais clara.
+
+
+5) SECÇÃO #cesto (carrinho + checkout)
+-----------------------------------------------------------
+<section id="cesto"> ... </section>
+
+→ Mostra os produtos selecionados pelo utilizador.
+→ Estrutura:
+   - <ul id="cesto-itens"> → lista de produtos no cesto (gerida via JS/localStorage)
+   - <aside class="cart-total"> → mostra custo total.
+   - <div class="checkout"> → inclui:
+        * Checkbox “És estudante do DEISI?”
+        * Campo “Nome”
+        * Campo “Cupão de desconto”
+        * Botão “Comprar”
+        * <div class="resultado-final"> → mostra o resultado após compra.
+
+→ Campos:
+   - input-nome → apenas letras (ver JS)
+   - input-cupao → texto livre (ignorado se estudante)
+   - chk-deisi → ativa o desconto de estudante
+   - btn-comprar → chama a função finalizarCompra()
+
+→ Alterações possíveis:
+  - Tornar o nome obrigatório antes de comprar.
+  - Adicionar botão “Esvaziar Cesto”.
+  - Adicionar mensagem de confirmação ao concluir a compra.
+
+
+6) SCRIPT
+-----------------------------------------------------------
+<script type="module" src="scripts/main.js"></script>
+
+→ Carrega o JavaScript principal que controla:
+   - Produtos e categorias (API)
+   - Cesto (localStorage)
+   - Finalização da compra (POST /buy/)
+→ Usa type="module" para permitir importações modernas.
+
+→ Alterações possíveis:
+  - Dividir o JS em múltiplos ficheiros (api.js, ui.js, etc.).
+  - Adicionar defer se for script não modular.
+
+
+===========================================================
+ DICAS PARA DEFESA
+===========================================================
+✔ Estrutura semântica: header, main, section, aside.  
+✔ IDs bem definidos e ligados ao JS.  
+✔ Acessibilidade com aria-label e role="list".  
+✔ Layout responsivo e limpo.  
+✔ Códigos bem separados (HTML / CSS / JS).  
+✔ O nome, cupão e checkbox são enviados à API no momento da compra.
+
+===========================================================
+ EXEMPLOS DE PERGUNTAS DO PROFESSOR
+-----------------------------------------------------------
+❓ “Como adicionar uma categoria nova (‘Casacos’)?”
+→ Acrescentar uma <option value="Casacos">Casacos</option> no filtro.
+   (Ou no JS, em carregarDadosIniciais()).
+
+❓ “Como adicionar ordenação alfabética?”
+→ Acrescentar novas opções <option> no HTML e tratar no JS (renderLista()).
+
+❓ “Como limpar o cesto depois da compra?”
+→ No JS (finalizarCompra), após sucesso:
+     localStorage.setItem('produtos-selecionados', '[]');
+     atualizaCesto();
+
+❓ “Como mostrar mensagem de sucesso no HTML?”
+→ Adicionar elemento <p id="sucesso">Compra realizada com sucesso!</p>
+   e mostrar via JS quando o POST for bem-sucedido.
+
+===========================================================
+ FIM DO GUIA HTML
+===========================================================
+-->
